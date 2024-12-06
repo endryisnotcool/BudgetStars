@@ -1,5 +1,6 @@
-const UserModel = require('../database/userModel')
-class User {
+import UserModel from '../database/userModel'
+
+export class User {
     constructor(username, password){
         this.username = username;
         this._password = password;
@@ -25,5 +26,3 @@ class User {
     }
 
 }
-
-module.exports = User;
