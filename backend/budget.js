@@ -1,6 +1,6 @@
-const BudgetModel = require('../database/budgetModel');
+import {BudgetModel} from "../database/budgetModel.js";
 
-class Budget {
+export class Budget {
     constructor(amount, categories){
         this._amount = amount;
         this._categories = categories;
@@ -20,5 +20,3 @@ class Budget {
         return await BudgetModel.findOne(userId);
     }
 }
-
-module.exports = Budget;
