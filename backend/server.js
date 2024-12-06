@@ -26,8 +26,10 @@ mongoose.connect(dbUrl, {
 
 // User registration endpoint
 app.post("/api/register", async (req, res) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   const { email, password } = req.body;
-  const newUser = new User({ email, password });
+  const newUser = new User({ email, password: hashedPassword });
   try {
     await newUser.save();
     res.status(201).send({ message: "User registered successfully" });
@@ -69,8 +71,17 @@ app.post("/api/budget/spend", async (req, res) => {
   try {
     const userBudget = await Budget.findOne({ userId });
     // Assuming spending does not need to be saved as a new document
+    if (!userBudget){
+      return res.status(404).send({message: "Budget not found"})
+    }
+    //check to see if there's enough budget
+    if (userBudget.totalBudget < amount){
+      return res.status(400).send({message: "Insufficient budget"})
+    }
+
     userBudget.totalBudget -= amount;
     await userBudget.save();
+
     res.json({ message: "Category spending updated" });
   } catch (error) {
     res.status(400).send(error);
@@ -88,5 +99,5 @@ app.get('/api/users', async(req, res)=> {
 })
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost: ${PORT}`)
+    console.log(`Server is running on http://localhost:${PORT}`)
 })
