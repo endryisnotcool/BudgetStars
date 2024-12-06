@@ -33,12 +33,38 @@ const BudgetSetupPage: React.FC = () => {
     } else {
       setPreviousValues(updatedCategories); // Save the current state
       setCategories(updatedCategories);
+      fetch("http://localhost:5001/api/budget/set", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          totalBudget: totalBudget, // Ensure this is a number
+          categories: {
+            Food: updatedCategories.Food,
+            Clothing: updatedCategories.Clothing,
+            Education: updatedCategories.Education,
+            Entertainment: updatedCategories.Entertainment,
+            Health: updatedCategories.Health
+          }
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      })
+      .then(data => console.log('Success:', data))
+      .catch(error => console.error('Error:', error));
     }
   };
 
   const calculateTotal = () => {
     return Object.values(categories).reduce((sum, val) => sum + val, 0);
   };
+
 
   const calculateWeekly = (amount: number) => (amount / 4).toFixed(2);
 
