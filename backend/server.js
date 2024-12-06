@@ -4,7 +4,8 @@ import cors from 'cors';
 import bcrypt from 'bcrypt'; // Add bcrypt for password hashing
 
 import mongoose from 'mongoose';
-import { User } from '../backend/user.js';
+//import { User } from '../backend/user.js';
+//const { Budget } = require('../backend/budget');
 import {Budget} from "../backend/budget.js";
 console.log(Budget);
 /*const Expense = require('../database/expenseModel');
