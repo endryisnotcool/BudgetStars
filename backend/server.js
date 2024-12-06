@@ -4,8 +4,8 @@ const cors = require('cors');
 const bcrypt = require('bcrypt'); // Add bcrypt for password hashing
 
 const mongoose = require('mongoose');
-const User = require('../database/userModel');
-const Budget = require('../database/budgetModel');
+const { User } = require('../backend/user');
+const { Budget } = require('../backend/user');
 const Expense = require('../database/expenseModel');
 const Report = require('../database/reportModel');
 const Notification = require('../database/notificationModel');
@@ -28,8 +28,8 @@ mongoose.connect(dbUrl, {
 app.post("/api/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const { email, password } = req.body;
-  const newUser = new User({ email, password: hashedPassword });
+  const {username, password } = req.body;
+  const newUser = new User({username, hashedPassword });
   try {
     await newUser.save();
     res.status(201).send({ message: "User registered successfully" });
@@ -42,7 +42,7 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findByEmail({ email });
     if (user && await bcrypt.compare(password, user.password)) {
       res.json({ message: "Login successful" });
     } else {
@@ -55,10 +55,10 @@ app.post("/api/login", async (req, res) => {
 
 // Set budget endpoint
 app.post("/api/budget/set", async (req, res) => {
-  const { userId, totalBudget, period, startDate, endDate } = req.body;
-  const newBudget = new Budget({ userId, totalBudget, period, startDate, endDate });
+  const { email, totalBudget, period, startDate, endDate } = req.body;
+  const newBudget = new Budget(totalBudget, {});
   try {
-    await newBudget.save();
+    const savedBudget = await newBudget.save(email);
     res.json({ message: "Budget set successfully" });
   } catch (error) {
     res.status(400).send(error);
@@ -69,7 +69,7 @@ app.post("/api/budget/set", async (req, res) => {
 app.post("/api/budget/spend", async (req, res) => {
   const { userId, amount, category } = req.body;
   try {
-    const userBudget = await Budget.findOne({ userId });
+    const userBudget = await Budget.findByUserId({ userId });
     // Assuming spending does not need to be saved as a new document
     if (!userBudget){
       return res.status(404).send({message: "Budget not found"})
