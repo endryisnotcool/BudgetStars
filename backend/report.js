@@ -1,6 +1,6 @@
 const ReportModel = require('../database/reportModel');
 
-export class Report{
+class Report{
     constructor(userId, reportType, data){
         this._userId = userId;
         this._reportType = reportType;
@@ -21,3 +21,5 @@ export class Report{
         return await ReportModel.find({userId});
     }
 }
+
+module.exports = Report;

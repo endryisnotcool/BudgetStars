@@ -1,6 +1,6 @@
 const NotificationModel = require('../database/notificationModel');
 
-export class Notification{
+class Notification{
     constructor(userId, type, message){
         this._userId = userId;
         this._type = type;
@@ -19,3 +19,5 @@ export class Notification{
         return await NotificationModel.find(userId);
     }
 }
+
+module.exports = Notification;

@@ -1,5 +1,5 @@
 const UserModel = require('../database/userModel')
-export class User {
+class User {
     constructor(username, password){
         this.username = username;
         this._password = password;
@@ -25,3 +25,5 @@ export class User {
     }
 
 }
+
+module.exports = User;

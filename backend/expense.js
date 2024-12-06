@@ -1,6 +1,6 @@
 const ExpenseModel = require('../database/expenseModel');
 
-export class Expense{
+class Expense{
     constructor(userId, amount, category, description = ''){
         this._userId = userId
         this._amount = amount;
@@ -28,3 +28,5 @@ export class Expense{
         return await ExpenseModel.find({userId, category});
     }
 }
+
+module.exports = Expense;
