@@ -77,6 +77,16 @@ app.post("/api/budget/spend", async (req, res) => {
   }
 });
 
+app.get('/api/users', async(req, res)=> {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  }
+  catch(error){
+    res.status(500).json({success: false, error: error.message})
+  }
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost: ${PORT}`)
 })
