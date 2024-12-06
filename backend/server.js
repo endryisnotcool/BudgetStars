@@ -55,16 +55,18 @@ app.post("/api/login", async (req, res) => {
 
 // Set budget endpoint
 app.post("/api/budget/set", async (req, res) => {
-  const { userIdentifier, budgetTotal, budgetPeriod, startOfPeriod, endOfPeriod } = req.body;
-  const newBudgetEntry = new Budget({
-    userId: userIdentifier,
-    totalBudget: budgetTotal,
-    period: budgetPeriod,
-    startDate: startOfPeriod,
-    endDate: endOfPeriod
-  });
+  const { userId, totalBudget, food, clothing, education, entertainment, health } = req.body;
+  const categoryList = {
+    Food: food,
+    Clothing: clothing,
+    Education: education,
+    Entertainment: entertainment,
+    Health: health,
+  };
+
+  const newBudgetEntry = new Budget(totalBudget, categoryList);
   try {
-    await newBudgetEntry.save();
+    const savedBudget = await newBudgetEntry.save(userId);
     res.json({ message: "Budget set successfully" });
   } catch (error) {
     res.status(400).send(error);
