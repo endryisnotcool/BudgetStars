@@ -1,14 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const bcrypt = require('bcrypt'); // Add bcrypt for password hashing
+import express from 'express';
+import bodyParser from 'body-parser'
+import cors from 'cors';
+import bcrypt from 'bcrypt'; // Add bcrypt for password hashing
 
-const mongoose = require('mongoose');
-const { User } = require('../backend/user');
-const { Budget } = require('../backend/user');
-const Expense = require('../database/expenseModel');
+import mongoose from 'mongoose';
+//import { User } from '../backend/user.js';
+//const { Budget } = require('../backend/budget');
+import {Budget} from "../backend/budget.js";
+console.log(Budget);
+/*const Expense = require('../database/expenseModel');
 const Report = require('../database/reportModel');
-const Notification = require('../database/notificationModel');
+const Notification = require('../database/notificationModel');*/
 
 const PORT = 5001;
 const app = express();
@@ -23,6 +25,9 @@ mongoose.connect(dbUrl, {
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
+
+// const budget = new Budget(5000,{Food: 1000});
+// console.log(budget);
 
 // User registration endpoint
 app.post("/api/register", async (req, res) => {
