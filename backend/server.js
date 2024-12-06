@@ -88,6 +88,31 @@ app.post("/api/budget/spend", async (req, res) => {
   }
 });
 
+app.post("/api/expense/add", async(req,res) => {
+  const{userId, amount, category, description} = req.body;
+  const newExpense = new Expense ({userId, amount, category, description})
+
+  try{
+    const savedExpense = await newExpense.save();
+    res.json({message: "Expense added successfully"});
+  }
+  catch (error) {
+    res.status(400).send(error);
+  }
+})
+
+app.post("/api/notification/add", async(req, res) => {
+  const {userId, type, message} = req.body;
+  const newNotification = new Notification({userId, type, message});
+  try {
+    const savedNotification = await newNotification.save();
+    res.json({message: "Notification created successfully"});
+  }
+  catch (error) {
+    res.status(400).send(error);
+  }
+})
+
 app.get('/api/users', async(req, res)=> {
   try {
     const users = await User.find();
@@ -95,6 +120,28 @@ app.get('/api/users', async(req, res)=> {
   }
   catch(error){
     res.status(500).json({success: false, error: error.message})
+  }
+})
+
+app.get("/api/notification/:userId", async(req, res) => {
+  const {userID} = req.params;
+  try {
+    const notification = await Notification.find({userId});
+    res.json(notifications);
+  }
+  catch (error) {
+    res.status(400).send(error);
+  }
+})
+
+app.get("/api/reports/:userId", async(req,res) => {
+  const {userId} = req.params;
+  try {
+    const reports = await Report.find(userId);
+    res.json(reports);
+  }
+  catch(error) {
+    res.status(400).send(error);
   }
 })
 
