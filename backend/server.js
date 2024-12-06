@@ -55,7 +55,7 @@ app.post("/api/login", async (req, res) => {
 
 // Set budget endpoint
 app.post("/api/budget/set", async (req, res) => {
-  const { userId, totalBudget, food, clothing, education, entertainment, health } = req.body;
+  const { totalBudget, food, clothing, education, entertainment, health } = req.body;
   const categoryList = {
     Food: food,
     Clothing: clothing,
@@ -63,7 +63,6 @@ app.post("/api/budget/set", async (req, res) => {
     Entertainment: entertainment,
     Health: health,
   };
-
   const newBudgetEntry = new Budget(totalBudget, categoryList);
   try {
     const savedBudget = await newBudgetEntry.save(userId);

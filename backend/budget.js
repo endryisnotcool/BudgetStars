@@ -1,15 +1,14 @@
 const BudgetModel = require('../database/budgetModel');
 
 class Budget {
-    constructor(userId, amount, categories){
-        this._userId = userId;
+    constructor(amount, categories){
         this._amount = amount;
         this._categories = categories;
     }
 
     async save(userId){
         const budget = new BudgetModel ({
-            userId: userId,
+            userId,
             totalBudget: this._amount,
             categories: this._categories,
         });
