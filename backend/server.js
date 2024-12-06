@@ -4,8 +4,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt'; // Add bcrypt for password hashing
 
 import mongoose from 'mongoose';
-//import { User } from '../backend/user.js';
-//const { Budget } = require('../backend/budget');
+import { User } from '../backend/user.js';
 import {Budget} from "../backend/budget.js";
 console.log(Budget);
 /*const Expense = require('../database/expenseModel');
@@ -132,6 +131,18 @@ app.get('/api/users', async(req, res)=> {
   }
   catch(error){
     res.status(500).json({success: false, error: error.message})
+  }
+})
+
+app.get("/api/budget", async(req, res) => {
+  const {userId} = req.params;
+
+  try {
+    const setBudget = await Budget.findByUserId({userId});
+    res.json(200).json(setBudget);
+  }
+  catch (error) {
+    res.status(400).send(error);
   }
 })
 
