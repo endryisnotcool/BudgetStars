@@ -2,7 +2,7 @@ const BudgetModel = require('../database/budgetModel');
 
 export class Budget {
     constructor(amount, categories){
-        this._amount = 0;
+        this._amount = amount;
         this._categories = {};
     }
 
